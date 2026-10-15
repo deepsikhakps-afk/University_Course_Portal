@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smart University Portal</title>
+<style>
+:root{--bg:#eef2f9;--card:#fff;--ink:#0f172a;--mut:#64748b;--line:#dbe3ef;--pri:#1d4ed8;--ok:#15803d;--okbg:#dcfce7;--err:#b91c1c;--errbg:#fee2e2;--soft:#f4f7fc}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1220;--card:#131c2e;--ink:#e6ecf7;--mut:#93a1b8;--line:#25324a;--okbg:#10331f;--errbg:#3a1618;--soft:#0f1829;--ok:#4ade80;--err:#f87171}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.5}
+.auth{min-height:100vh;display:grid;place-items:center;padding:20px}
+.card{width:min(440px,100%);background:var(--card);border-radius:18px;overflow:hidden;box-shadow:0 10px 40px rgba(15,23,42,.15)}
+.head{background:linear-gradient(135deg,#1e40af,#2563eb);color:#fff;text-align:center;padding:28px 20px}
+.head h1{margin:10px 0 2px;font-size:22px}.head p{margin:0;font-size:13px;opacity:.85}
+.logo{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.18);display:inline-grid;place-items:center;font-size:26px}
+.body{padding:24px}
+label{display:block;font-size:12.5px;font-weight:600;color:var(--mut);margin:14px 0 5px}
+.in{position:relative}
+input,select{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
+input:focus,select:focus,button:focus-visible,a:focus-visible{outline:2px solid var(--pri);outline-offset:1px}
+.bad{border-color:var(--err)}
+.eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;cursor:pointer;color:var(--mut);padding:6px;font-size:13px}
+.fe{color:var(--err);font-size:12px;margin-top:4px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{width:100%;margin-top:18px;padding:12px;border:0;border-radius:10px;background:var(--pri);color:#fff;font:inherit;font-weight:600;cursor:pointer}
+.btn:disabled{opacity:.6;cursor:wait}.btn.sm{width:auto;margin:14px 0 0;padding:9px 16px}
+.sw{text-align:center;color:var(--mut);font-size:13.5px;margin:16px 0 0}
+a{color:var(--pri);font-weight:600;cursor:pointer}
+.alert{padding:10px 12px;border-radius:10px;font-size:13.5px;margin-top:14px}
+.alert.e{background:var(--errbg);color:var(--err)}.alert.s{background:var(--okbg);color:var(--ok)}
+.demo{margin-top:18px;border-top:1px solid var(--line);padding-top:14px;text-align:center;font-size:12px;color:var(--mut)}
+.demo div{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.demo button{padding:9px;border-radius:9px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:600;font-size:13px;cursor:pointer}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;background:var(--card);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.top small{display:block;color:var(--mut);font-size:12px}
+.who{display:flex;align-items:center;gap:10px;font-size:13px}
+.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11.5px;font-weight:700}
+.p-admin{background:#fee2e2;color:#b91c1c}.p-faculty{background:#dbeafe;color:#1d4ed8}.p-student{background:#dcfce7;color:#15803d}
+.p-pass{background:var(--okbg);color:var(--ok)}.p-fail{background:var(--errbg);color:var(--err)}.p-wait{background:var(--soft);color:var(--mut)}
+.out{background:none;border:1.5px solid var(--line);color:var(--ink);border-radius:9px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+.wrap{max-width:1000px;margin:0 auto;padding:20px}
+.hero{border-radius:16px;color:#fff;padding:24px;margin-bottom:18px}
+.hero h2{margin:0 0 4px;font-size:24px}.hero p{margin:0;opacity:.88;font-size:14px}
+.h-admin{background:linear-gradient(135deg,#9f1239,#be123c)}.h-faculty{background:linear-gradient(135deg,#1e40af,#2563eb)}.h-student{background:linear-gradient(135deg,#0f766e,#1d4ed8)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px}
+.stat{background:var(--card);border-radius:14px;padding:14px;border:1px solid var(--line)}
+.stat span{font-size:12px;color:var(--mut)}.stat b{display:block;font-size:26px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:18px}
+.panel h3{margin:0 0 12px;font-size:16px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);white-space:nowrap}th{font-size:12px;color:var(--mut)}
+.bar{height:8px;border-radius:9px;background:var(--soft);min-width:90px;overflow:hidden}.bar i{display:block;height:100%;background:var(--pri)}
+.empty{text-align:center;color:var(--mut);padding:26px 10px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const DEPTS = ['Computer Science','Electronics & Communication','Mechanical Engineering','Business Administration'];
+const SEMS = [1,2,3,4,5,6,7,8].map(n => 'Semester ' + n);
+const DEG = ['Bachelor of Technology (B.Tech)','Master of Computer Applications (MCA)','Bachelor of Computer Applications (BCA)','Master of Technology (M.Tech)'];
+const DEMO = {admin:['admin@demo.edu','Admin@123'],faculty:['faculty@demo.edu','Faculty@123'],student:['student@demo.edu','Student@123']};
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const app = $('#app');
+let token = null; try { token = sessionStorage.getItem('token'); } catch {}
+let view = 'login', notice = '';
+
+/* ---------- API helper (talks to the Express + MongoDB server) ---------- */
+async function api(path, opt = {}) {
+  const headers = {'Content-Type': 'application/json'};
+  if (token) headers.Authorization = 'Bearer ' + token;
+  let r;
+  try { r = await fetch('/api' + path, {...opt, headers, body: opt.body ? JSON.stringify(opt.body) : undefined}); }
+  catch { throw {error: 'Cannot reach the server. Make sure it is running.'}; }
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw {...d, status: r.status};
+  return d;
+}
+const setToken = t => { token = t; try { t ? sessionStorage.setItem('token', t) : sessionStorage.removeItem('token'); } catch {} };
+
+/* ---------- helpers ---------- */
+const grade = p => p>=90?'O':p>=80?'A+':p>=70?'A':p>=60?'B':p>=50?'C':p>=40?'D':'F';
+const summary = (subs, m) => { const v = subs.map(s => m[s]); if (v.some(x => x == null)) return null;
+  const t = v.reduce((a,b)=>a+b,0), p = t/subs.length; return {t, p, g: grade(p), pass: v.every(x => x >= 40)}; };
+const fld = (id,l,type='text',ph='') => `<label for="${id}">${l}</label><div class="in"><input id="${id}" type="${type}" placeholder="${ph}" autocomplete="off">${type==='password'?`<button type="button" class="eye" data-eye="${id}">Show</button>`:''}</div><div class="fe" id="e-${id}"></div>`;
+const sel = (id,l,opts) => `<label for="${id}">${l}</label><select id="${id}">${id==='dept'?'<option value="">Select department</option>':''}${opts.map(o=>`<option>${esc(o)}</option>`).join('')}</select><div class="fe" id="e-${id}"></div>`;
+const showErr = (r, ids) => ids.forEach(i => { const e = $('#e-'+i), inp = $('#'+i); if (e) e.textContent = r[i] || ''; if (inp) inp.classList.toggle('bad', !!r[i]); });
+
+/* ---------- views ---------- */
+function loginView() {
+  app.innerHTML = `<div class="auth"><div class="card"><div class="head"><div class="logo">🎓</div><h1>Smart University Portal</h1><p>Sign in to access your university dashboard</p></div>
+  <form class="body" id="f" novalidate>${notice?`<div class="alert s">${esc(notice)}</div>`:''}
+  ${fld('email','Email Address *','email','you@university.edu')}${fld('password','Password *','password')}
+  <div class="alert e" id="ferr" role="alert" hidden></div>
+  <button class="btn" id="go">Sign In</button>
+  <p class="sw">Are you a new student? <a id="reg" tabindex="0">Register here</a></p>
+  <div class="demo">One-click demo login<div><button type="button" data-d="admin">Admin</button><button type="button" data-d="faculty">Faculty</button><button type="button" data-d="student">Student</button></div></div>
+  </form></div></div>`; notice = '';
+  const run = async (email, pw) => {
+    const r = {};
+    if (!EMAIL.test(email.trim())) r.email = email ? 'Enter a valid email address.' : 'Enter your email address.';
+    if (!pw) r.password = 'Enter your password.';
+    showErr(r, ['email','password']); const box = $('#ferr'); box.hidden = true;
+    if (Object.keys(r).length) return;
+    $('#go').disabled = true;
+    try { const d = await api('/login', {method:'POST', body:{email, password: pw}}); setToken(d.token); route(); }
+    catch (e) { box.textContent = e.error || 'Login failed.'; box.hidden = false; $('#go').disabled = false; }
+  };
+  $('#f').onsubmit = ev => { ev.preventDefault(); run($('#email').value, $('#password').value); };
+  $('#reg').onclick = () => { view = 'register'; route(); };
+  app.querySelectorAll('[data-d]').forEach(b => b.onclick = () => { const [e,p] = DEMO[b.dataset.d]; $('#email').value = e; $('#password').value = p; run(e, p); });
+}
+function regView() {
+  app.innerHTML = `<div class="auth"><div class="card"><div class="head"><div class="logo">🎓</div><h1>Student Registration</h1><p>Create your university student account</p></div>
+  <form class="body" id="f" novalidate>${fld('name','Full Name *','text','Full name')}${fld('email','University Email *','email','you@university.edu')}
+  <div class="row"><div>${fld('password','Password *','password')}</div><div>${fld('confirm','Confirm Password *','password')}</div></div>
+  <div class="row"><div>${sel('dept','Academic Department',DEPTS)}</div><div>${sel('sem','Semester',SEMS)}</div></div>
+  ${sel('degree','Degree Program',DEG)}
+  <div class="alert e" id="ferr" role="alert" hidden></div>
+  <button class="btn" id="go">Complete Registration</button>
+  <p class="sw">Already registered? <a id="back" tabindex="0">Sign in</a></p></form></div></div>`;
+  const ids = ['name','email','password','confirm','dept'];
+  $('#back').onclick = () => { view = 'login'; route(); };
+  $('#f').onsubmit = async ev => { ev.preventDefault();
+    const v = {name:$('#name').value.trim(), email:$('#email').value.trim(), password:$('#password').value, confirm:$('#confirm').value, dept:$('#dept').value, sem:$('#sem').value, degree:$('#degree').value};
+    const r = {};
+    if (!/^[A-Za-z][A-Za-z .'-]{2,59}$/.test(v.name)) r.name = 'Enter your full name (letters only, at least 3 characters).';
+    if (!EMAIL.test(v.email)) r.email = 'Enter a valid university email.';
+    if (v.password.length<8||!/[a-z]/.test(v.password)||!/[A-Z]/.test(v.password)||!/\d/.test(v.password)||!/[^A-Za-z0-9]/.test(v.password)) r.password = 'Use 8+ characters with upper, lower, number and symbol.';
+    if (!v.confirm || v.confirm !== v.password) r.confirm = 'Passwords do not match.';
+    if (!v.dept) r.dept = 'Select a department.';
+    showErr(r, ids); if (Object.keys(r).length) return;
+    $('#go').disabled = true;
+    try { const d = await api('/register', {method:'POST', body:v}); notice = d.message; view = 'login'; route(); }
+    catch (e) { if (e.errors) showErr(e.errors, ids); else { const b = $('#ferr'); b.textContent = e.error || 'Registration failed.'; b.hidden = false; } $('#go').disabled = false; }
+  };
+}
+const topbar = u => `<div class="top"><div><b>Smart University</b><small>Academic Management Portal</small></div>
+  <div class="who"><span class="pill p-${u.role}">${u.role}</span><span>${esc(u.name)}<small>${esc(u.email)}</small></span><button class="out" id="out">Sign out</button></div></div>`;
+
+async function studentBody(u) {
+  const {subjects, marks} = await api('/marks/me'), s = summary(subjects, marks);
+  return `<div class="hero h-student"><h2>Welcome, ${esc(u.name)}</h2><p>${esc(u.studentId)} · ${esc(u.dept)} · ${esc(u.sem)} · ${esc(u.degree)}</p></div>
+  ${s?`<div class="stats"><div class="stat"><span>Total</span><b>${s.t}/${subjects.length*100}</b></div><div class="stat"><span>Percentage</span><b>${s.p.toFixed(2)}%</b></div><div class="stat"><span>Grade</span><b>${s.g}</b></div><div class="stat"><span>Result</span><b><span class="pill ${s.pass?'p-pass':'p-fail'}">${s.pass?'PASS':'FAIL'}</span></b></div></div>`:''}
+  <div class="panel"><h3>My Marks</h3>${Object.keys(marks).length?'':'<div class="empty">Your marks have not been published yet. Check back after faculty uploads results.</div>'}
+  <div class="tw"><table><thead><tr><th>Subject</th><th>Marks</th><th>Out of</th><th>Score</th><th>Grade</th></tr></thead><tbody>
+  ${subjects.map(x=>`<tr><td>${esc(x)}</td><td>${marks[x]??'-'}</td><td>100</td><td><div class="bar"><i style="width:${marks[x]??0}%"></i></div></td><td>${marks[x]==null?'-':grade(marks[x])}</td></tr>`).join('')}</tbody></table></div></div>`;
+}
+const dirTable = (subjects, st) => `<div class="panel"><h3>Student directory</h3><div class="tw"><table><thead><tr><th>Name</th><th>ID</th><th>Department</th><th>Semester</th><th>Percentage</th><th>Result</th></tr></thead><tbody>
+  ${st.map(x=>{const s=summary(subjects,x.marks);return`<tr><td>${esc(x.name)}</td><td>${esc(x.studentId)}</td><td>${esc(x.dept)}</td><td>${esc(x.sem)}</td><td>${s?s.p.toFixed(2)+'%':'-'}</td><td><span class="pill ${s?(s.pass?'p-pass':'p-fail'):'p-wait'}">${s?(s.pass?'Pass':'Fail'):'Pending'}</span></td></tr>`}).join('')}</tbody></table></div></div>`;
+let cache = null;
+async function facultyBody(u) {
+  cache = await api('/students');
+  return `<div class="hero h-faculty"><h2>Welcome, ${esc(u.name)}</h2><p>Enter and update marks for registered students.</p></div>
+  <div class="panel"><h3>Upload marks</h3>${cache.students.length?`<label for="stu">Student</label><select id="stu">${cache.students.map((x,i)=>`<option value="${i}">${esc(x.name)} (${esc(x.studentId)})</option>`).join('')}</select>
+  <div class="grid4" id="mf"></div><div class="alert" id="mmsg" hidden></div><button class="btn sm" id="save">Save marks</button>`:'<div class="empty">No students registered yet.</div>'}</div>${dirTable(cache.subjects, cache.students)}`;
+}
+async function adminBody(u) {
+  const [st, d] = await Promise.all([api('/stats'), api('/students')]);
+  return `<div class="hero h-admin"><h2>Welcome, ${esc(u.name)}</h2><p>Central administrative panel for student records and results.</p></div>
+  <div class="stats"><div class="stat"><span>Total students</span><b>${st.students}</b></div><div class="stat"><span>Faculty</span><b>${st.faculty}</b></div><div class="stat"><span>Courses</span><b>${st.courses}</b></div><div class="stat"><span>Departments</span><b>${st.departments}</b></div></div>${dirTable(d.subjects, d.students)}`;
+}
+async function appView(u) {
+  let body;
+  try { body = u.role === 'student' ? await studentBody(u) : u.role === 'faculty' ? await facultyBody(u) : await adminBody(u); }
+  catch (e) { if (e.status === 401) { setToken(null); view = 'login'; notice = e.error; return route(); } body = `<div class="alert e">${esc(e.error || 'Something went wrong.')}</div>`; }
+  app.innerHTML = topbar(u) + `<div class="wrap">${body}</div>`;
+  $('#out').onclick = () => { setToken(null); view = 'login'; route(); };
+  if ($('#stu')) {
+    const fill = () => { const x = cache.students[$('#stu').value]; $('#mf').innerHTML = cache.subjects.map((s,i)=>`<div><label for="m${i}">${esc(s)}</label><input id="m${i}" type="number" min="0" max="100" value="${x.marks[s]??''}"></div>`).join(''); };
+    fill(); $('#stu').onchange = fill;
+    $('#save').onclick = async () => { const box = $('#mmsg'), x = cache.students[$('#stu').value]; box.hidden = false;
+      const marks = {}; cache.subjects.forEach((s,i) => marks[s] = $('#m'+i).value);
+      try { const d = await api('/marks/' + x.id, {method:'PUT', body:{marks}}); const keep = $('#stu').value; await appView(u); $('#stu').value = keep; $('#stu').onchange();
+        const b = $('#mmsg'); b.hidden = false; b.className = 'alert s'; b.textContent = d.message; }
+      catch (e) { box.className = 'alert e'; box.textContent = e.error || 'Could not save marks.'; } };
+  }
+}
+async function route() {
+  if (token) { try { const {user} = await api('/me'); return appView(user); } catch { setToken(null); } }
+  view === 'register' ? regView() : loginView();
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-eye]'); if (!b) return;
+  const i = $('#' + b.dataset.eye); i.type = i.type === 'password' ? 'text' : 'password'; b.textContent = i.type === 'password' ? 'Show' : 'Hide'; });
+route();
+</script>
+</body>
+</html>
