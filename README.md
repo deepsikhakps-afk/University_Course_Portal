@@ -15,15 +15,7 @@ University Course Portal is a web-based application designed to manage universit
 - CSS
 - JavaScript
 
-## 📂 Project Structure
-```text
-University_Course_Portal/
-│
-├── index.html
-├── style.css
-├── script.js
-└── README.md
-```
+
 
 ## 🚀 How to Run the Project
 1. Clone this repository:
